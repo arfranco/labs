@@ -1,0 +1,44 @@
+I looked up the function of the method call .merge for hashes. 
+.merge is used to merge two different hashes to make one singular hash
+For example, if 
+a = {
+                  Brit: "Awesome"
+                  Anthony: "Less awesome"
+                  Hashes: "Least awesome"
+}
+and you wanted to merge it with another hash 
+b = {
+       Tucker: "Bad-ass beard"
+       Juan: "Loves soccer"               
+}
+
+then one would write it a.merge(b) which would yield
+{
+  Brit: "Awesome"
+  Anthony: "Less awesome"
+  Hashes: "Least awesome"
+  Tucker: "Bad-ass beard"
+  Juan: "Loves soccer"
+}
+
+One cool thing to note though is if there are duplicate keys in the two hashes, the hash will assume the value of the new hash you're trying to merge. So for example,
+If a = {
+                  Brit: "Awesome"
+                  Anthony: "Less awesome"
+                  Hashes: "Least awesome"
+}
+
+and b instead were
+b = {
+                  Brit: "Beyond Awesome!"
+                  Sarah: "Sweet"
+                  Hashes: "Least awesome but mainly because I'm lost"
+}
+
+a.merge(b) will read
+{
+  Brit: "Beyond Awesome!"
+  Anthony: "Less awesome"
+  Hashes: "Least awesome but mainly because I'm lost"
+  Sarah: "Sweet"
+}

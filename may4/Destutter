@@ -1,0 +1,28 @@
+def destutter(array)
+	index = 0
+	result = []
+	result_index = 0
+
+	array.each do |item|
+		if item != array[item+1]
+			result[result_index] = item
+			result_index += 1
+		end
+		index += 1
+	end
+	result
+end
+
+
+def destutter2(seq)
+	result = []
+	last = nil
+
+	seq.each do |item|
+		if item != last
+			result.push(item)
+		end
+		last = item
+	end
+	result
+end
