@@ -21,14 +21,16 @@ end
 
 guessing_game
 
-answer = "yes"
+puts "Would you like to play again?"
+	answer = gets.chomp
+	if answer == "yes"
+	guessing_game
+	 end
 
-while answer == "yes" || answer == "y"
-		puts "Would you like to play again?"
-		answer = gets.chomp
-		if answer== "yes"
-		guessing_game
-	    end
-end
 
 puts "Ok no problem! :)"
+
+
+
+
+
