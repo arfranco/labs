@@ -10,6 +10,7 @@ def show_board(board)
   puts "                 "
   puts "                 "
   puts "                 "
+  puts "                 "
   puts "  #{board[0]}  |  #{board[1]}  |  #{board[2]}  "
   puts "-----+-----+-----"
   puts "  #{board[3]}  |  #{board[4]}  |  #{board[5]} "
@@ -82,7 +83,7 @@ user_input_cpu_player = gets.chomp.downcase
 end
 
 def game_finished?(user1_numbers, user2_numbers)
-  user1_three_in_a_row?(user1_numbers) || user2_three_in_a_row?(user2_numbers)
+  win?(user1_numbers) || win?(user2_numbers)
 end
 
 def game_tied?(turn_count)
@@ -105,33 +106,6 @@ end
 #if win?(user1_numbers), then user one is winner
 #if win?(user2_numbers), then user two is winner
 
-def user1_three_in_a_row?(user1_numbers)
- winning_numbers =[[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7],[7,5,3]]
- win = false
-  winning_numbers.each do |win|
-    if win.to_set.subset?(user1_numbers) 
-      win = true
-      break
-    else
-      win = false
-    end
-  end
-  win
-end
-
-def user2_three_in_a_row?(user2_numbers)
-  winning_numbers = [[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7],[7,5,3]]
-  win = false
-  winning_numbers.each do |win|
-    if win.to_set.subset?(user2_numbers) 
-      win = true
-      break
-    else
-      win = false
-    end
-  end
-  win
-end
 
 def player_one_turn(board, player_one_move)
   board[player_one_move.to_i - 1] = "X"
@@ -154,7 +128,7 @@ def tic_tac_toe(board)
     player_one_turn(board, player_one_move)
     user1_numbers.add(player_one_move)
     turn_count -= 1
-    if win?(user1_numbers) 
+    if win?(user1_numbers) == true
     puts "Congratulations!! You won player 1!"
     break
       elsif game_tied?(turn_count) 
@@ -166,7 +140,7 @@ def tic_tac_toe(board)
     player_two_turn(board, player_two_move)
     user2_numbers.add(player_two_move)
     turn_count -= 1   
-    if win?(user2_numbers) 
+    if win?(user2_numbers) == true
       puts "Congratulations!! You won player 2!"
       break
       elsif game_tied?(turn_count) 
