@@ -25,6 +25,8 @@ def show_board(board)
   puts "                 "
   puts "                 "
   puts "                 "
+
+
 end
 
 def greeting(board)
@@ -92,16 +94,16 @@ end
 
 def win?(user_numbers)
   winning_numbers =[[1,2,3],[4,5,6],[7,8,9],[1,4,7],[2,5,8],[3,6,9],[1,5,9],[3,5,7]]
-  win = false
+  game_won = false
   winning_numbers.each do |win|
     if win.to_set.subset?(user_numbers)
-      win = true
+      game_won = true
       break
     else
-      win = false
+      game_won = false
     end
   end
-  win
+  game_won
 end
 #if win?(user1_numbers), then user one is winner
 #if win?(user2_numbers), then user two is winner
@@ -128,11 +130,11 @@ def tic_tac_toe(board)
     player_one_turn(board, player_one_move)
     user1_numbers.add(player_one_move)
     turn_count -= 1
-    if win?(user1_numbers) == true
+  if win?(user1_numbers) 
     puts "Congratulations!! You won player 1!"
     break
-      elsif game_tied?(turn_count) 
-        puts "Awww seems like there's a tie!"
+    elsif game_tied?(turn_count) 
+      puts "Awww seems like there's a tie!"
       break
     end 
     puts "What is your move player 2?"
@@ -140,11 +142,11 @@ def tic_tac_toe(board)
     player_two_turn(board, player_two_move)
     user2_numbers.add(player_two_move)
     turn_count -= 1   
-    if win?(user2_numbers) == true
-      puts "Congratulations!! You won player 2!"
-      break
-      elsif game_tied?(turn_count) 
-        puts "Awww seems like there's a tie!"
+  if win?(user2_numbers) 
+    puts "Congratulations!! You won player 2!"
+    break
+    elsif game_tied?(turn_count) 
+      puts "Awww seems like there's a tie!"
       break 
     end
   end
