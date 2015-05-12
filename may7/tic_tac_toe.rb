@@ -8,14 +8,13 @@ def show_board(board)
   puts "                 "
   puts "                 "
   puts "                 "
-  puts "                 "
-  puts "                 "
-  puts "  #{board[0]}  |  #{board[1]}  |  #{board[2]}  "
-  puts "-----+-----+-----"
-  puts "  #{board[3]}  |  #{board[4]}  |  #{board[5]} "
-  puts "-----+-----+-----"
-  puts "  #{board[6]}  |  #{board[7]}  |  #{board[8]} "
-  puts "                 "
+  puts "+-----+-----+-----+"
+  puts "|  #{board[0]}  |  #{board[1]}  |  #{board[2]}  |"
+  puts "+-----+-----+-----+"
+  puts "|  #{board[3]}  |  #{board[4]}  |  #{board[5]}  |"
+  puts "+-----+-----+-----+"
+  puts "|  #{board[6]}  |  #{board[7]}  |  #{board[8]}  |"
+  puts "+-----+-----+-----+"
   puts "                 "
   puts "                 "
   puts "                 "
@@ -71,7 +70,7 @@ user_input_cpu_player = gets.chomp.downcase
     if user_input_cpu_player == "yes" || user_input_cpu_player =="y"
       puts "Great! Let's get started"
       show_board(board)
-      computer_play(board)
+    computer_play(board)
     elsif user_input_cpu_player =~ /\d/
       puts "Whoops! Looks like you typed in a number instead of yes or no. Would you like to play tic tac toe with me the computer? ('y' or 'n')"
       user_input_cpu_player = gets.chomp.downcase
@@ -83,12 +82,8 @@ user_input_cpu_player = gets.chomp.downcase
     end
 end
 
-def humans_game_finished?(user1_numbers, user2_numbers)
-  win?(user1_numbers) || win?(user2_numbers)
-end
-
-def comp_game_finished?(user1_numbers, comp_numbers)
-  win?(user1_numbers) || win?(comp_numbers)
+def game_finished?(user1_numbers, user2_numbers, turn_count)
+  win?(user1_numbers) || win?(user2_numbers) || game_tied?(turn_count)
 end
 
 def game_tied?(turn_count)
@@ -108,9 +103,6 @@ def win?(user_numbers)
   end
   game_won
 end
-#if win?(user1_numbers), then user one is winner
-#if win?(user2_numbers), then user two is winner
-
 
 def player_one_turn(board, player_one_move)
   board[player_one_move.to_i - 1] = "X"
@@ -122,21 +114,28 @@ def player_two_turn(board, player_two_move)
   show_board(board)
 end
 
-def computer_move(board, comp_numbers, user1_numbers)
-  if board.sample != comp_numbers || board.sample != user1_numbers
-    board[board.sample.to_i] = "O"
-    show_board(board)
-  end
+ def computer_move(board)
+  sleep(2)
+  available = board.select { |x| x.is_a? Fixnum }
+  random_choice = available.sample
+  board[random_choice-1] = "O" 
+  show_board(board)
+  random_choice
 end
-
 
 def player_vs_player(board)
   turn_count = 9
   user1_numbers = Set.new
   user2_numbers = Set.new
-  until game_finished?(user1_numbers, comp_numbers) || game_tied?(turn_count) 
+  until game_finished?(user1_numbers, user2_numbers, turn_count) 
     puts "What is your move player 1?:"
-    player_one_move = gets.chomp.to_i
+    player_one_move = gets.chomp
+    available = board.select { |x| x.is_a? Fixnum }
+    until player_one_move =~ /^#{available}$/
+    puts "Sorry, that number was already picked. Please pick a numbered square: "
+    player_one_move = gets.chomp
+    end
+    player_one_move = player_one_move.to_i
     player_one_turn(board, player_one_move)
     user1_numbers.add(player_one_move)
     turn_count -= 1
@@ -148,7 +147,13 @@ def player_vs_player(board)
       break
     end 
     puts "What is your move player 2?"
-    player_two_move = gets.chomp.to_i
+    player_two_move = gets.chomp
+    available = board.select { |x| x.is_a? Fixnum }
+    until player_two_move =~ /^#{available}$/
+    puts "Sorry, that number was already picked. Please pick a numbered square: "
+    player_two_move = gets.chomp
+    end
+    player_two_move = player_two_move.to_i
     player_two_turn(board, player_two_move)
     user2_numbers.add(player_two_move)
     turn_count -= 1   
@@ -166,7 +171,7 @@ def computer_play(board)
   turn_count = 9
   user1_numbers = Set.new
   comp_numbers = Set.new
-  until comp_game_finished?(user1_numbers, comp_numbers) || game_tied?(turn_count) 
+  until game_finished?(user1_numbers, comp_numbers, turn_count) 
     puts "What is your move player 1?:"
     player_one_move = gets.chomp.to_i
     player_one_turn(board, player_one_move)
@@ -179,12 +184,13 @@ def computer_play(board)
       puts "Awww seems like there's a tie!"
       break
   end 
-    puts "The computer is making a move now."
-    comp_move1 = computer_move(board, comp_numbers, user1_numbers)
-    comp_numbers.add(comp_move1)
+    puts "The computer is thinking about it's next move."
+    move = computer_move(board)
+    puts "The computer selected #{move}"
+    comp_numbers.add(move)
     turn_count -= 1  
   if win?(comp_numbers) 
-    puts "Congratulations!! You won player 2!"
+    puts "Awww looks like the computer won!"
     break
     elsif game_tied?(turn_count) 
       puts "Awww seems like there's a tie!"
