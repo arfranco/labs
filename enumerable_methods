@@ -1,0 +1,35 @@
+.select method
+
+def my_select(array, selector)
+  result = []
+  array.each do |el|
+    if el == selector
+    result << yield(el)
+    end
+  end
+end
+
+
+.all method
+
+def my_include(array, selector)
+ result = false
+ array.each do |el|
+  if el == selector
+    return true
+  else
+    return false
+  end
+ end
+end
+
+.drop method
+
+def my_drop(array, num)
+  result = []
+  array.each do |el|
+  result << yield(array[num:])
+  end
+end
+
+
