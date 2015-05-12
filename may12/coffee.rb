@@ -2,16 +2,20 @@ class Coffee
 
   def initialize(coffee_name)
     @coffee_name = coffee_name
+    @coffee_level = 3.0
   end
 
   def full?
-    true
+    @coffee_level == 3.0
   end 
 
   def empty?
-    true
+   @coffee_level == 0.0
   end
 
+  def drink_coffee
+    @coffee_level -= 1.0
+  end
 
 
 end

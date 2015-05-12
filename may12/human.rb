@@ -11,20 +11,22 @@ class Human
   end
 
   def has_coffee?
-    false
+   @has_coffee 
   end
 
   def needs_coffee?
-    true
+    @has_coffee == false
   end
 
   def drink!
     @alertness += 0.33
+    @coffee.drink_coffee
   end
 
   def buy(coffee)
     @has_coffee = true
     @coffee = coffee
+    true
   end
 
 end
