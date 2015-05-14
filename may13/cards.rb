@@ -1,7 +1,7 @@
 require 'pry'
 
 module IronYardGames
-  class Card
+class Card
 
   RANKS = (2..10).to_a + [:J, :Q, :K, :A]
   SUITS = [:diamonds, :clubs, :spades, :hearts]
@@ -43,23 +43,49 @@ module IronYardGames
   # def suit
   #   @suit
   # end
-  end
-
-  class Deck 
-
-  RANKS = (2..10).to_a + [:J, :Q, :K, :A]
-  SUITS = [:diamonds, :clubs, :spades, :hearts]
-
-  def initialize
-    @deck = []
-  Card::SUITS.each do |s|
-    Card::RANKS.each do |r|
-      deck << Card.new(r, s)
-    end
-  end
-
-  end
-
 end
 
+  class Deck 
+    # RANKS = Card::RANKS
+    # SUITS = Card::SUITS
+
+    def initialize
+      @deck = get_cards
+    end
+
+    def get_cards
+      @deck = []
+      Card::SUITS.each do |s|
+        Card::RANKS.each do |r|
+          @deck << [r, s]
+        end
+      end
+      @deck
+    end
+
+    def each
+      @deck.each {|card| yield card} 
+    end
+
+    def draw(n)
+      until n == 0
+        drawn_cards = []
+        random_card = @deck.sample  
+        @deck.delete(random_card)
+        @deck
+        n -= 1
+      end
+    end
+
+    def peek 
+      first_card = @deck[0]
+      puts "The first card in the deck right now is #{first_card}"
+    end
+
+    def shuffle
+      @deck.shuffle!
+    end
+
+  end
 binding.pry
+end
