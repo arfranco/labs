@@ -57,7 +57,7 @@ end
       @deck = []
       Card::SUITS.each do |s|
         Card::RANKS.each do |r|
-          @deck << [r, s]
+          @deck << Card.new(r, s)
         end
       end
       @deck
@@ -70,11 +70,12 @@ end
     def draw(n)
       until n == 0
         drawn_cards = []
-        random_card = @deck.sample  
+        random_card = @deck.sample 
+        drawn_cards << random_card 
         @deck.delete(random_card)
-        @deck
         n -= 1
       end
+      drawn_cards
     end
 
     def peek 
