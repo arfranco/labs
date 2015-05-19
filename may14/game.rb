@@ -117,11 +117,23 @@ class Game
       end
     end
   end
+
+  def play_again?
+    puts "Would you like to play again? 'yes' or 'no'"
+    input = gets.chomp.downcase
+    if input == 'yes'
+      new_game = Game.new
+      new_game.play
+    else
+      puts "No problem. Hope you had fun!"
+    end
+  end
+
 end
 
 game = Game.new
 game.play
-
+game.play_again?
 
 
 
