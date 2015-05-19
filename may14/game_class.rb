@@ -1,76 +1,129 @@
-require './player_class/'
-require './board_class/'
-require './computer_class/'
+require './human'
+require './board'
+require './computer'
 
 class Game
 
-  WINS = [[0, 1, 2], [3, 4, 5], [6, 7, 8],
-        [0, 3, 6], [1, 4, 7], [2, 5, 8],
-        [0, 4, 8], [2, 4, 6]]
+  # board = Board.new
+  # brit = Human.new
+  # brit.choose_move(board)
 
   def initialize
     @board = Board.new
+    @player1 = nil
+    @player2 = nil
   end
 
-  def win?(board)
-    WINS.any? do |x, y, z|
-    @board[x] == @board[y] && @board[y] == @board[z]
-    end
-  end
-
-  def tie?(board)
-    @board.all? { |x| x.is_a? String }
+  def turn(move, player)
+    @board.move(move, player.character)
   end
   
-  def game_over?(board)
-    win?(@board) || tie?(@board)
+  def over?
+    @board.win? || @board.tie?
   end
 
-
-  def player_vs_player
-  player1 = Player.new(player1)
-  player2 = Player.new(player2)
-  until game_over?(board)
-    player1.choose_move
-    player_one_turn(@board, player1.choose_move)
-    @board.show
-    if win?(board)
-      puts "Congratulations!! You won player 1!"
-      break
-    elsif game_tied?
-      puts "Awww seems like there's a tie!"
-      break
-    end 
-    player2.choose_move(board)
-    player_two_turn(@board, player2.choose_move)
-    @board.show 
-    if win?(board)
-      puts "Congratulations!! You won player 2!"
-      break
-    elsif game_tied?(turn_count) 
-      puts "Awww seems like there's a tie!"
-      break 
-    end
-  end
-  end
 
   def type
-    game = Game.new
-    puts "Please choose what type of game you'd like to play: 
+    puts "Welcome! Please choose what type of game you'd like to play:
           1: Player vs. Player
           2: Player vs. Computer
           3. Computer vs. Computer"
-    game_type_input = gets.chomp.to_i
-    if game_type_input == 1
-      game.player_vs_player
-    end
+   choice = gets.chomp.to_i
   end
 
+  def play
+  game = Game.new
+  choice = game.type
+  if choice == 1 
+    @player1 = Human.new("player 1", "X")
+    @player2 = Human.new("player 2", "O")
+    until game.over?
+      @board.show
+      puts "Please pick a numbered square: "
+      move = @player1.get_move(@board)
+      game.turn(move, @player1)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+      puts "Please pick a numbered square:"
+      @player2.get_move(@board)
+      game.turn(@player2)
+      @board.show
+      if game.win? 
+        puts "COngratulations! You won!"
+        break
+      elsif game.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+    end
+  elsif choice == 2
+    @player1 = Human.new("player 1", "X")
+    @player2 = Computer.new("player 2", "O")
+    until game.over?
+      @board.show
+      puts "Please pick a numbered square: "
+      @player1.get_move(@board)
+      game.turn(@player1)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+      puts "Please wait while computer gets move:"
+      @player2.get_move(@board)
+      game.turn(@player2)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+    end
+  else
+    @player1 = Computer.new("player 1", "X")
+    @player2 = Computer.new("player 2", "O")
+    until game.over?
+      puts "Please wait while computer gets move:"
+      @player1.get_move(@board)
+      game.turn(@player1)
+      @board.show
+      if @board.win? 
+        puts "COngratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+      puts "Please wait while computer gets move:"
+      @player2.get_move(@board)
+      game.turn(@player2)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+    end
+  end
+end
 end
 
-game = Game.new
-game.type
 
+game = Game.new
+game.play
 
 
 

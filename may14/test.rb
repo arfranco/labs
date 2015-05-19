@@ -12,11 +12,8 @@ class Tic_tac_toe_test < MiniTest::Test
     assert_instance_of Board, board 
   end
 
-  def test_cpu_guess
-    cpu = Cpu.new("O")
-    available = (1..9).to_a
-    guess = cpu.select_placement(available)
-    assert available.include?(guess.to_i)
+  def test_humans_have_names
+    
   end
 
 end 
