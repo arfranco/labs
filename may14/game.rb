@@ -29,92 +29,104 @@ class Game
    choice = gets.chomp.to_i
   end
 
+  def player_vs_player
+    @player1 = Human.new("player 1", "X")
+    @player2 = Human.new("player 2", "O")
+    until self.over?
+      @board.show
+      puts "Please pick a numbered square player 1: "
+      move = @player1.get_move(@board.board)
+      @board.move(move, @player1.character)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won player 1!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+      puts "Please pick a numbered square player 2:"
+      move = @player2.get_move(@board.board)
+      @board.move(move, @player2.character)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won player 2!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+    end
+  end
+
+  def player_vs_computer
+    @player1 = Human.new("player 1", "X")
+    @player2 = Computer.new("player 2", "O")
+    until self.over?
+      @board.show
+      puts "Please pick a numbered square player 1: "
+      move = @player1.get_move(@board.board)
+      @board.move(move, @player1.character)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won player 1!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+      puts "Please wait while computer gets move:"
+      move = @player2.get_move(@board.board)
+      @board.move(move, @player2.character)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won player 2!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+    end
+  end
+
+  def computer_vs_computer
+    @player1 = Computer.new("player 1", "X")
+    @player2 = Computer.new("player 2", "O")
+    until self.over?
+      puts "Please wait while computer gets move:"
+      move = @player1.get_move(@board.board)
+      @board.move(move, @player1.character)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+      puts "Please wait while computer gets move:"
+      move = @player2.get_move(@board.board)
+      @board.move(move, @player2.character)
+      @board.show
+      if @board.win? 
+        puts "Congratulations! You won!"
+        break
+      elsif @board.tie?
+        puts "Aww man! Seems like there's a tie."
+        break
+      end
+    end
+  end
+
   def play
     game = Game.new
     choice = game.type
     if choice == 1 
-      @player1 = Human.new("player 1", "X")
-      @player2 = Human.new("player 2", "O")
-      until game.over?
-        @board.show
-        puts "Please pick a numbered square player 1: "
-        move = @player1.get_move(@board.board)
-        @board.move(move, @player1.character)
-        @board.show
-        if @board.win? 
-          puts "Congratulations! You won player 1!"
-          break
-        elsif @board.tie?
-          puts "Aww man! Seems like there's a tie."
-          break
-        end
-        puts "Please pick a numbered square player 2:"
-        move = @player2.get_move(@board.board)
-        @board.move(move, @player2.character)
-        @board.show
-        if @board.win? 
-          puts "Congratulations! You won player 2!"
-          break
-        elsif @board.tie?
-          puts "Aww man! Seems like there's a tie."
-          break
-        end
-      end
+      self.player_vs_player
     elsif choice == 2
-      @player1 = Human.new("player 1", "X")
-      @player2 = Computer.new("player 2", "O")
-      until game.over?
-        @board.show
-        puts "Please pick a numbered square player 1: "
-        move = @player1.get_move(@board.board)
-        @board.move(move, @player1.character)
-        @board.show
-        if @board.win? 
-          puts "Congratulations! You won player 1!"
-          break
-        elsif @board.tie?
-          puts "Aww man! Seems like there's a tie."
-          break
-        end
-        puts "Please wait while computer gets move:"
-        move = @player2.get_move(@board.board)
-        @board.move(move, @player2.character)
-        @board.show
-        if @board.win? 
-          puts "Congratulations! You won player 2!"
-          break
-        elsif @board.tie?
-          puts "Aww man! Seems like there's a tie."
-          break
-        end
-      end
+      self.player_vs_computer
     else
-      @player1 = Computer.new("player 1", "X")
-      @player2 = Computer.new("player 2", "O")
-      until game.over?
-        puts "Please wait while computer gets move:"
-        move = @player1.get_move(@board.board)
-        @board.move(move, @player1.character)
-        @board.show
-        if @board.win? 
-          puts "Congratulations! You won!"
-          break
-        elsif @board.tie?
-          puts "Aww man! Seems like there's a tie."
-          break
-        end
-        puts "Please wait while computer gets move:"
-        move = @player2.get_move(@board.board)
-        @board.move(move, @player2.character)
-        @board.show
-        if @board.win? 
-          puts "Congratulations! You won!"
-          break
-        elsif @board.tie?
-          puts "Aww man! Seems like there's a tie."
-          break
-        end
-      end
+      self.computer_vs_computer
     end
   end
 

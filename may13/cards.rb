@@ -48,43 +48,44 @@ end
   class Deck 
     # RANKS = Card::RANKS
     # SUITS = Card::SUITS
+    include Enumerable
 
     def initialize
-      @deck = get_cards
-    end
-
-    def get_cards
-      @deck = []
+      @cards = []
       Card::SUITS.each do |s|
         Card::RANKS.each do |r|
-          @deck << Card.new(r, s)
+          @cards << Card.new(r, s)
         end
       end
-      @deck
+      @cards
     end
 
     def each
-      @deck.each {|card| yield card} 
+      @cards.each {|card| yield(card) } 
     end
 
     def draw(n)
       until n == 0
         drawn_cards = []
-        random_card = @deck.sample 
-        drawn_cards << random_card 
-        @deck.delete(random_card)
+        drawn_card = @cards.shift 
+        drawn_cards << drawn_card 
+        @cards.delete(drawn_card)
         n -= 1
       end
       drawn_cards
     end
 
+    def count
+      @cards.length
+    end
+
     def peek 
-      first_card = @deck[0]
+      first_card = @cards[0]
       puts "The first card in the deck right now is #{first_card}"
     end
 
     def shuffle
-      @deck.shuffle!
+      @cards.shuffle!
     end
 
   end
